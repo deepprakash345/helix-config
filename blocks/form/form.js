@@ -585,7 +585,7 @@ export default async function decorate(block) {
   let pathname;
   if (container) {
     ({ pathname } = new URL(container.href));
-    formDef = await fetchForm(container.href);
+    formDef = await fetchForm(container.innerText);
   } else {
     ({ container, formDef } = extractFormDefinition(block));
   }
