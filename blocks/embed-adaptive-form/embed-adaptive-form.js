@@ -10,7 +10,7 @@ export default function decorate(block) {
 
       const container = block.querySelector('a[href]');
       // get the pathname from the href
-      const { pathname } = new URL(container.innerText).href;
+      const { href } = new URL(container.innerText);
       const form = await loadFragment(pathname);
       block.replaceChildren(form.children[0]);
     }
