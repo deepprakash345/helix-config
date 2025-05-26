@@ -29,7 +29,6 @@ const withFieldWrapper = (element) => (fd) => {
 function setPlaceholder(element, fd) {
   if (fd.placeholder) {
     element.setAttribute('placeholder', fd.placeholder);
-    //sdsdasdasdasd
   }
 }
 
