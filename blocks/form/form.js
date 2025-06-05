@@ -62,6 +62,19 @@ function createInput(fd) {
   return input;
 }
 
+async function getSupportedSubmitTypes() {
+  const supportedSubmitActionsUrl = 'https://forms.adobe.com/adobe/forms/af/submit';
+  try {
+    const response = await fetch(supportedSubmitActionsUrl);
+    const data = await response.json();
+    const supportedSubmitTypes = data?.supported;
+    return supportedSubmitTypes;
+  } catch (e) {
+    console.error('Unable to fetch supported submit types', e);
+    return [];
+  }
+}
+
 const createTextArea = withFieldWrapper((fd) => {
   const input = document.createElement('textarea');
   setPlaceholder(input, fd);
@@ -593,11 +606,9 @@ export default async function decorate(block) {
   let form;
   if (formDef) {
     const submitProps = formDef?.properties?.['fd:submit'];
-    const actionType = submitProps?.actionName || formDef?.properties?.actionType;
-    const spreadsheetUrl = submitProps?.spreadsheet?.spreadsheetUrl
-      || formDef?.properties?.spreadsheetUrl;
-
-    if (actionType === 'spreadsheet' && spreadsheetUrl) {
+   const actionType = submitProps?.actionName || formDef?.properties?.actionType?.split('/').pop() || '';
+    const supportedSubmitTypes = getSupportedSubmitTypes();
+    if (supportedSubmitTypes.includes(actionType)) {
       // Check if we're in an iframe and use parent window path if available
       const iframePath = window.frameElement ? window.parent.location.pathname
         : window.location.pathname;
