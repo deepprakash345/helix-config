@@ -607,7 +607,7 @@ export default async function decorate(block) {
   if (formDef) {
     const submitProps = formDef?.properties?.['fd:submit'];
    const actionType = submitProps?.actionName || formDef?.properties?.actionType?.split('/').pop() || '';
-    const supportedSubmitTypes = getSupportedSubmitTypes();
+    const supportedSubmitTypes = await getSupportedSubmitTypes();
     if (supportedSubmitTypes.includes(actionType)) {
       // Check if we're in an iframe and use parent window path if available
       const iframePath = window.frameElement ? window.parent.location.pathname
